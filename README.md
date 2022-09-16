@@ -35,6 +35,7 @@ Hot Water: 48.0
 
 - Assumes you have one location
 - Assumes you have zero or one hot water systems
+- No tests
 
 ## License
 
