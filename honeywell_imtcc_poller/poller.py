@@ -1,16 +1,18 @@
 import requests
 import time
-import socket
-
-from tenacity import retry
-from tenacity import wait_fixed
+import prometheus_client
 
 
 class Poller:
-    def __init__(self, carbon_server_hostname):
+    def __init__(self):
         self.api_url = "https://international.mytotalconnectcomfort.com/api"
         self.session = requests.Session()
-        self.carbon_server_hostname = carbon_server_hostname
+        prometheus_client.start_http_server(8000)
+        self.current_temperature_guage = prometheus_client.Gauge(
+            "current_temperature",
+            f"Current temperature of a room or hot water system",
+            ["zone_name", "is_hot_water"],
+        )
 
     def login(self, email_address: str, password: str) -> None:
         login_data = {
@@ -33,7 +35,9 @@ class Poller:
 
     def poll(self, wait: int = None) -> None:
         while True:
-            locations_response = self.session.get(f"{self.api_url}/locationsApi/getLocations")
+            locations_response = self.session.get(
+                f"{self.api_url}/locationsApi/getLocations"
+            )
             locations_response.raise_for_status()
             location_id = locations_response.json()["Content"]["Locations"][0]["Id"]
             location_response = self.session.get(
@@ -47,22 +51,17 @@ class Poller:
                 if zone["IsAlive"]
             ]
             for zone in active_zones:
+                is_hot_water = False
+                zone_name = zone.get("Name")
                 if zone["ThermostatType"] == 1:
-                    self.send_metric(
-                        "Hot Water", "current_temperature", zone["Temperature"]
-                    )
-                    continue
-                self.send_metric(f"zone.{zone['Name']}", "current_temperature", zone["Temperature"])
+                    is_hot_water = True
+                    zone_name = "Hot Water"
+                self.send_metric(zone_name, is_hot_water, zone["Temperature"])
             if wait:
                 time.sleep(wait)
                 continue
             return
 
-    def send_metric(self, zone_name, metric_name, value) -> None:
-        path = f"heating.{zone_name.replace(' ', '_').lower()}.{metric_name}"
-        data = f"{path} {value} {int(time.time())}"
-        print(data)
-        if self.carbon_server_hostname:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as carbon_socket:
-                carbon_socket.connect((self.carbon_server_hostname, 2003))
-                carbon_socket.sendall(data.encode())
+    def send_metric(self, zone_name: str, is_hot_water: bool, value: float) -> None:
+        print(f"{zone_name}: {value}")
+        self.current_temperature_guage.labels(zone_name, is_hot_water).set(value)

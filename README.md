@@ -1,6 +1,6 @@
 # Honeywell IMTCC Poller
 
-Tool for polling heating data from [Honeywell International My Total Connect Comfort](https://international.mytotalconnectcomfort.com/Account/Login).
+Tool for polling heating data from [Honeywell International My Total Connect Comfort](https://international.mytotalconnectcomfort.com/Account/Login) and presenting it as [Prometheus](https://prometheus.io/) metrics.
 
 ## Installation
 
@@ -31,11 +31,16 @@ Main Bedroom: 19.5
 Hot Water: 48.0
 ```
 
+You can use the `--poll` option to repeatedly call the Honeywell API. It will make the calls every 60 seconds by default, but this can be changed by specifying a different value in seconds (e.g. `--poll 90`).
+
+The Prometheus metrics are made available for scraping on `https://localhost:8000` while the tool is running.
+
 ## Limitations
 
 - Assumes you have one location
 - Assumes you have zero or one hot water systems
 - No tests
+- Limited error handling
 
 ## License
 
