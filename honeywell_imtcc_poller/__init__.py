@@ -6,15 +6,6 @@ from .poller import Poller
 
 @click.command()
 @click.option(
-    "-c",
-    "--carbon-server-hostname",
-    default=None,
-    flag_value="localhost",
-    help="If specified, the tool will send metrics to a Carbon relay server the provided hostname (default: localhost).",
-    is_flag=False,
-    type=str,
-)
-@click.option(
     "-p",
     "--poll",
     default=None,
@@ -23,8 +14,8 @@ from .poller import Poller
     is_flag=False,
     type=int,
 )
-def run_cli(carbon_server_hostname, poll):
-    poller = Poller(carbon_server_hostname=carbon_server_hostname)
+def run_cli(poll):
+    poller = Poller()
     poller.login(
         os.environ["HONEYWELL_EMAIL_ADDRESS"], os.environ["HONEYWELL_PASSWORD"]
     )
