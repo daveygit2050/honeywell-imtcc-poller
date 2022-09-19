@@ -86,6 +86,14 @@ tomli = {version = "*", optional = true, markers = "python_full_version <= \"3.1
 toml = ["tomli"]
 
 [[package]]
+name = "httpretty"
+version = "1.1.4"
+description = "HTTP client mock for Python"
+category = "dev"
+optional = false
+python-versions = ">=3"
+
+[[package]]
 name = "idna"
 version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -284,7 +292,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "5b5f6393f33a9f7951aca5ca89d57530f5bc13f84cde0a729bb53384c7622ca1"
+content-hash = "98ffc49b451f0cd8c6baef21abf32093a330511e9036e59a6c6dc0714b3390a3"
 
 [metadata.files]
 attrs = [
@@ -383,6 +391,9 @@ coverage = [
     {file = "coverage-6.4.4-cp39-cp39-win_amd64.whl", hash = "sha256:1238b08f3576201ebf41f7c20bf59baa0d05da941b123c6656e42cdb668e9827"},
     {file = "coverage-6.4.4-pp36.pp37.pp38-none-any.whl", hash = "sha256:f67cf9f406cf0d2f08a3515ce2db5b82625a7257f88aad87904674def6ddaec1"},
     {file = "coverage-6.4.4.tar.gz", hash = "sha256:e16c45b726acb780e1e6f88b286d3c10b3914ab03438f32117c4aa52d7f30d58"},
+]
+httpretty = [
+    {file = "httpretty-1.1.4.tar.gz", hash = "sha256:20de0e5dd5a18292d36d928cc3d6e52f8b2ac73daec40d41eb62dee154933b68"},
 ]
 idna = [
     {file = "idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},

@@ -33,7 +33,7 @@ class Poller:
         )
         login_response.raise_for_status()
 
-    def poll(self, wait: int = None) -> None:
+    def poll(self, wait: int = 60) -> None:
         while True:
             locations_response = self.session.get(
                 f"{self.api_url}/locationsApi/getLocations"
@@ -43,6 +43,7 @@ class Poller:
             location_response = self.session.get(
                 f"{self.api_url}/locationsApi/getLocationSystem?id={location_id}"
             )
+            location_response.raise_for_status()
             active_zones = [
                 zone
                 for zone in location_response.json()["Content"]["LocationModel"][
@@ -57,10 +58,7 @@ class Poller:
                     is_hot_water = True
                     zone_name = "Hot Water"
                 self.send_metric(zone_name, is_hot_water, zone["Temperature"])
-            if wait:
-                time.sleep(wait)
-                continue
-            return
+            time.sleep(wait)
 
     def send_metric(self, zone_name: str, is_hot_water: bool, value: float) -> None:
         print(f"{zone_name}: {value}")

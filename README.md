@@ -16,8 +16,8 @@ You can then run `poetry install` to install the required python libraries.
 Create environment variables containing your [login credetials](https://international.mytotalconnectcomfort.com/Account/Login):
 
 ```bash
-export HONEYWELL_EMAIL_ADDRESS="foo@example.com"
-export HONEYWELL_PASSWORD="ThisIsNotARealPassword"
+$ export HONEYWELL_EMAIL_ADDRESS="foo@example.com"
+$ export HONEYWELL_PASSWORD="ThisIsNotARealPassword"
 ```
 
 You can then run the tool via poetry:
@@ -31,7 +31,7 @@ Main Bedroom: 19.5
 Hot Water: 48.0
 ```
 
-You can use the `--poll` option to repeatedly call the Honeywell API. It will make the calls every 60 seconds by default, but this can be changed by specifying a different value in seconds (e.g. `--poll 90`).
+The tool will authenticate with the Honeywell API using the login credentials supplied. It will make the calls every 60 seconds in order to get location and zone data.
 
 The Prometheus metrics are made available for scraping on `https://localhost:8000` while the tool is running.
 
@@ -39,9 +39,15 @@ The Prometheus metrics are made available for scraping on `https://localhost:800
 
 - Assumes you have one location
 - Assumes you have zero or one hot water systems
-- No tests
 - Limited error handling
 
+## Developing
+
+Running tests:
+
+```bash
+$ make test
+```
 ## License
 
 This project is licensed under the terms of the [MIT License](./LICENSE.md).
