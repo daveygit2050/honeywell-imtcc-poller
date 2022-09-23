@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "honeywell-imtcc-poller"
-version = "0.3.0"
+version = "0.3.1"
 description = "Tool for logging stats from the Honeywell international.mytotalconnectcomfort.com site"
 authors = ["Dave Randall <19395688+daveygit2050@users.noreply.github.com>"]
 license = "MIT"

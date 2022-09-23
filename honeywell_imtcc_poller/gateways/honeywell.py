@@ -27,13 +27,12 @@ class Honeywell:
         )
         login_response.raise_for_status()
 
-    # TODO: Does this return a str for real life?
     def get_location_ids(self) -> List[str]:
         response = self.session.get(f"{self.api_url}/locationsApi/getLocations")
         response.raise_for_status()
         return [location["Id"] for location in response.json()["Content"]["Locations"]]
 
-    def get_zone_data(self, location_id) -> List[ZoneData]:
+    def get_zone_data(self, location_id: str) -> List[ZoneData]:
         response = self.session.get(
             f"{self.api_url}/locationsApi/getLocationSystem?id={location_id}"
         )
