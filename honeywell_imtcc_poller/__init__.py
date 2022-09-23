@@ -1,8 +1,8 @@
-import click
 import os
 import time
-
 from typing import List
+
+import click
 
 from .gateways.honeywell import Honeywell
 from .gateways.prometheus import Prometheus

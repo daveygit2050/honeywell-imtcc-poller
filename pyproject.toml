@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "honeywell-imtcc-poller"
-version = "0.3.1"
+version = "0.3.2"
 description = "Tool for logging stats from the Honeywell international.mytotalconnectcomfort.com site"
 authors = ["Dave Randall <19395688+daveygit2050@users.noreply.github.com>"]
 license = "MIT"
@@ -23,6 +23,7 @@ pytest = "^7.1.3"
 pytest-cov = "^3.0.0"
 pytest-mock = "^3.8.2"
 httpretty = "^1.1.4"
+reorder-python-imports = "^3.8.2"
 
 [tool.coverage.run]
 source = ["honeywell_imtcc_poller"]
