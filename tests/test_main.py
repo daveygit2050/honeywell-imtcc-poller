@@ -28,9 +28,9 @@ def test_main(honeywell_simulator, mocker):
     time.sleep(1)
     assert [str(call) for call in mock_prometheus_client.mock_calls] == [
         "call.start_http_server(8000)",
-        "call.Gauge('current_temperature', 'Current temperature of a room or hot water system', ['zone_name', 'is_hot_water'])",
-        "call.Gauge().labels(zone_name='Foo Room', is_hot_water=False)",
+        "call.Gauge('current_temperature', 'Current temperature of a room or hot water system', ['name', 'type'])",
+        "call.Gauge().labels(name='Foo Room', type='room')",
         "call.Gauge().labels().set(19.5)",
-        "call.Gauge().labels(zone_name='Hot Water', is_hot_water=True)",
+        "call.Gauge().labels(name='Hot Water', type='water')",
         "call.Gauge().labels().set(49.0)",
     ]

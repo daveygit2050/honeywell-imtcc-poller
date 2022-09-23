@@ -14,7 +14,7 @@ def run_cli():
     prometheus.add_gauge(
         name="current_temperature",
         description="Current temperature of a room or hot water system",
-        labels=["zone_name", "is_hot_water"],
+        labels=["name", "type"],
     )
 
     honeywell = Honeywell(
@@ -37,6 +37,9 @@ def update_metrics(
         print(f"{zone.name}: {zone.current_temperature}")
         prometheus.send_metric(
             gauge_name="current_temperature",
-            labels={"zone_name": zone.name, "is_hot_water": zone.is_hot_water},
+            labels={
+                "name": zone.name,
+                "type": "water" if zone.is_hot_water else "room",
+            },
             value=zone.current_temperature,
         )
