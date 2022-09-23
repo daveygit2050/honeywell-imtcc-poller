@@ -2,4 +2,4 @@ black:
 	poetry run black .
 
 test: black
-	poetry run pytest --cov
+	poetry run pytest -vv --cov

@@ -37,7 +37,6 @@ The Prometheus metrics are made available for scraping on `https://localhost:800
 
 ## Limitations
 
-- Assumes you have one location
 - Assumes you have zero or one hot water systems
 - Limited error handling
 
