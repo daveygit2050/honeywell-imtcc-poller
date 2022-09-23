@@ -4,8 +4,9 @@ from typing import List
 
 import click
 
-from .gateways.honeywell import Honeywell
-from .gateways.prometheus import Prometheus
+from .gateways import Honeywell
+from .gateways import OpenWeather
+from .gateways import Prometheus
 
 
 @click.command()
@@ -22,12 +23,17 @@ def run_cli():
     )
     location_ids = honeywell.get_location_ids()
 
+    openweather = OpenWeather(api_key=os.environ["OPENWEATHER_API_KEY"])
+    latitude = os.environ["OPENWEATHER_LATITUDE"]
+    longitude = os.environ["OPENWEATHER_LONGITUDE"]
+
     while True:
-        update_metrics(honeywell, prometheus, location_ids)
+        update_honeywell_metrics(honeywell, prometheus, location_ids)
+        update_openweather_metrics(openweather, prometheus, latitude, longitude)
         time.sleep(60)
 
 
-def update_metrics(
+def update_honeywell_metrics(
     honeywell: Honeywell, prometheus: Prometheus, location_ids: List[str]
 ) -> None:
     zone_data = []
@@ -43,3 +49,18 @@ def update_metrics(
             },
             value=zone.current_temperature,
         )
+
+
+def update_openweather_metrics(
+    openweather: OpenWeather, prometheus: Prometheus, latitude: float, longitude: float
+) -> None:
+    outside_temperature = openweather.get_temperature(latitude, longitude)
+    print(f"Outside: {outside_temperature}")
+    prometheus.send_metric(
+        gauge_name="current_temperature",
+        labels={
+            "name": "Outside",
+            "type": "outside",
+        },
+        value=outside_temperature,
+    )

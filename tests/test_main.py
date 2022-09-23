@@ -8,12 +8,15 @@ import httpretty
 import honeywell_imtcc_poller
 
 
-def test_main(honeywell_simulator, mocker):
+def test_main(honeywell_simulator, openweather_simulator, mocker):
     mocker.patch.dict(
         os.environ,
         {
             "HONEYWELL_EMAIL_ADDRESS": "foo@example.com",
             "HONEYWELL_PASSWORD": "foo-password",
+            "OPENWEATHER_API_KEY": "foo-openweather-api-key",
+            "OPENWEATHER_LATITUDE": "51.476852",
+            "OPENWEATHER_LONGITUDE": "0.0005",
         },
     )
     mock_prometheus_client = mocker.patch(
@@ -33,4 +36,6 @@ def test_main(honeywell_simulator, mocker):
         "call.Gauge().labels().set(19.5)",
         "call.Gauge().labels(name='Hot Water', type='water')",
         "call.Gauge().labels().set(49.0)",
+        "call.Gauge().labels(name='Outside', type='outside')",
+        "call.Gauge().labels().set(16.36)",
     ]
