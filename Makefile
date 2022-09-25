@@ -6,6 +6,12 @@ bandit:
 black:
 	poetry run black .
 
+build: test bandit safety
+	poetry build
+
+publish: build
+	poetry publish
+
 reorder-imports:
 	poetry run reorder-python-imports --exit-zero-even-if-changed `find -name "*.py"`
 

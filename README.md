@@ -4,12 +4,9 @@ Tool for polling heating data from [Honeywell International My Total Connect Com
 
 ## Installation
 
-This is not yet packaged. To run, you will need to clone the repo with `git` and install the required prerequisites:
-
-* [Python 3.10.4](https://www.python.org/downloads/) or above
-* [Poetry 1.2.0](https://python-poetry.org/docs/#installation) or above
-
-You can then run `poetry install` to install the required python libraries.
+```bash
+pip install honeywell-imtcc-poller
+```
 
 ## Usage
 
@@ -56,6 +53,21 @@ Running tests:
 ```bash
 $ make test
 ```
+
+Building:
+
+```bash
+$ make build
+```
+
+Publishing:
+
+```bash
+$ make publish
+```
+
+For other tasks, see the [Makefile](./Makefile).
+
 ## License
 
 This project is licensed under the terms of the [MIT License](./LICENSE.md).
