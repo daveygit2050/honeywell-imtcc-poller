@@ -39,7 +39,7 @@ Outside: 16.36
 
 The tool will authenticate with the Honeywell API using the login credentials supplied. It will make the calls every 60 seconds in order to get location and zone data.
 
-The Prometheus metrics are made available for scraping on `https://localhost:8000` while the tool is running.
+The Prometheus metrics are made available for scraping on `http://localhost:8000` while the tool is running.
 
 ## Limitations
 
