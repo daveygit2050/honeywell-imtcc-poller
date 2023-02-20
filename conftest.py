@@ -8,7 +8,7 @@ from tests.simulators.prometheus_simulator import PrometheusSimulator
 
 @pytest.fixture(autouse=True)
 def enable_httpretty_before_each_test():
-    httpretty.enable(allow_net_connect=False)
+    httpretty.enable(allow_net_connect=True)
     yield
 
 

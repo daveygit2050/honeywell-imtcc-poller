@@ -10,7 +10,8 @@ from .gateways import Prometheus
 
 
 @click.command()
-def run_cli():
+@click.option("--openweather/--no-openweather", "openweather_enabled", default=True)
+def run_cli(openweather_enabled):
     prometheus = Prometheus()
     prometheus.add_gauge(
         name="current_temperature",
@@ -23,13 +24,15 @@ def run_cli():
     )
     location_ids = honeywell.get_location_ids()
 
-    openweather = OpenWeather(api_key=os.environ["OPENWEATHER_API_KEY"])
-    latitude = os.environ["OPENWEATHER_LATITUDE"]
-    longitude = os.environ["OPENWEATHER_LONGITUDE"]
+    if openweather_enabled:
+        openweather = OpenWeather(api_key=os.environ["OPENWEATHER_API_KEY"])
+        latitude = os.environ["OPENWEATHER_LATITUDE"]
+        longitude = os.environ["OPENWEATHER_LONGITUDE"]
 
     while True:
         update_honeywell_metrics(honeywell, prometheus, location_ids)
-        update_openweather_metrics(openweather, prometheus, latitude, longitude)
+        if openweather_enabled:
+            update_openweather_metrics(openweather, prometheus, latitude, longitude)
         time.sleep(60)
 
 

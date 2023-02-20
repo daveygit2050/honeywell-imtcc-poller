@@ -2,10 +2,22 @@ import os
 import sys
 import threading
 import time
-
-import httpretty
+from typing import List
 
 import honeywell_imtcc_poller
+
+
+def execute_poller(mocker, additional_arguments: List[str] = None):
+    sys_args = ["poll-honeywell"]
+    if additional_arguments:
+        sys_args.extend(additional_arguments)
+    mocker.patch.object(sys, "argv", sys_args)
+
+    polling_thread = threading.Thread(
+        target=honeywell_imtcc_poller.run_cli, daemon=True
+    )
+    polling_thread.start()
+    time.sleep(1)
 
 
 def test_main(honeywell_simulator, openweather_simulator, prometheus_simulator, mocker):
@@ -19,14 +31,8 @@ def test_main(honeywell_simulator, openweather_simulator, prometheus_simulator, 
             "OPENWEATHER_LONGITUDE": "0.0005",
         },
     )
-    httpretty.enable(allow_net_connect=True)
-    mocker.patch.object(sys, "argv", ["poll-honeywell"])
 
-    polling_thread = threading.Thread(
-        target=honeywell_imtcc_poller.run_cli, daemon=True
-    )
-    polling_thread.start()
-    time.sleep(1)
+    execute_poller(mocker=mocker)
 
     prometheus_simulator.assert_gauge_added(
         name="current_temperature",
@@ -47,3 +53,15 @@ def test_main(honeywell_simulator, openweather_simulator, prometheus_simulator, 
         labels={"name": "Outside", "type": "outside"},
         value=16.36,
     )
+
+
+def test_arguments(mocker):
+    mock_honeywell = mocker.patch("honeywell_imtcc_poller.Honeywell")
+    mock_openweather = mocker.patch("honeywell_imtcc_poller.OpenWeather")
+    mock_prometheus = mocker.patch("honeywell_imtcc_poller.Prometheus")
+
+    execute_poller(mocker=mocker, additional_arguments=["--no-openweather"])
+
+    mock_honeywell.assert_called()
+    mock_prometheus.assert_called()
+    mock_openweather.assert_not_called()
