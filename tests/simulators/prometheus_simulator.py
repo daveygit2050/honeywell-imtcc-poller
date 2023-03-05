@@ -12,7 +12,7 @@ class PrometheusSimulator:
         ]
         assert (
             len(matching_metrics) > 0
-        ), f"Found no metric sent with name={name} and description={description}"
+        ), f"Found no gauge added with name={name} and description={description}"
 
     def assert_metric_sent(self, name: str, labels: dict, value: float):
         all_samples = []

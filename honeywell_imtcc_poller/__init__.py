@@ -18,6 +18,11 @@ def run_cli(openweather_enabled):
         description="Current temperature of a room or hot water system",
         labels=["name", "type"],
     )
+    prometheus.add_gauge(
+        name="temperature_deficit",
+        description="How many degrees are required for the room to reach target temperature",
+        labels=["name", "type"],
+    )
 
     honeywell = Honeywell(
         os.environ["HONEYWELL_EMAIL_ADDRESS"], os.environ["HONEYWELL_PASSWORD"]
@@ -48,9 +53,17 @@ def update_honeywell_metrics(
             gauge_name="current_temperature",
             labels={
                 "name": zone.name,
-                "type": "water" if zone.is_hot_water else "room",
+                "type": zone.type,
             },
             value=zone.current_temperature,
+        )
+        prometheus.send_metric(
+            gauge_name="temperature_deficit",
+            labels={
+                "name": zone.name,
+                "type": zone.type,
+            },
+            value=zone.temperature_deficit,
         )
 
 

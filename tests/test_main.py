@@ -54,6 +54,21 @@ def test_main(honeywell_simulator, openweather_simulator, prometheus_simulator, 
         value=16.36,
     )
 
+    prometheus_simulator.assert_gauge_added(
+        name="temperature_deficit",
+        description="How many degrees are required for the room to reach target temperature",
+    )
+    prometheus_simulator.assert_metric_sent(
+        name="temperature_deficit",
+        labels={"name": "Foo Room", "type": "room"},
+        value=2.0,
+    )
+    prometheus_simulator.assert_metric_sent(
+        name="temperature_deficit",
+        labels={"name": "Hot Water", "type": "water"},
+        value=0.0,
+    )
+
 
 def test_arguments(mocker):
     mocker.patch.dict(

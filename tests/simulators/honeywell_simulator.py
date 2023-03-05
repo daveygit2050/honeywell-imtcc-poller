@@ -21,17 +21,20 @@ class HoneywellSimulator:
                                 "Name": "Foo Room",
                                 "ThermostatType": 0,
                                 "Temperature": 19.5,
+                                "TargetHeatTemperature": 21.5,
                             },
                             {
                                 "IsAlive": True,
                                 "ThermostatType": 1,
                                 "Temperature": 49.0,
+                                "TargetHeatTemperature": 40.0,
                             },
                             {
                                 "IsAlive": False,
                                 "Name": "Dead Zone",
                                 "ThermostatType": 0,
                                 "Temperature": 5.0,
+                                "TargetHeatTemperature": 5.0,
                             },
                         ]
                     }
