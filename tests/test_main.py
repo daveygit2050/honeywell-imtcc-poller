@@ -56,6 +56,14 @@ def test_main(honeywell_simulator, openweather_simulator, prometheus_simulator, 
 
 
 def test_arguments(mocker):
+    mocker.patch.dict(
+        os.environ,
+        {
+            "HONEYWELL_EMAIL_ADDRESS": "foo@example.com",
+            "HONEYWELL_PASSWORD": "foo-password",
+        },
+    )
+
     mock_honeywell = mocker.patch("honeywell_imtcc_poller.Honeywell")
     mock_openweather = mocker.patch("honeywell_imtcc_poller.OpenWeather")
     mock_prometheus = mocker.patch("honeywell_imtcc_poller.Prometheus")
